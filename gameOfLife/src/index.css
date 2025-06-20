@@ -13,6 +13,13 @@
   -moz-osx-font-smoothing: grayscale;
 }
 
+.alive-fill {
+  fill: #FFFFFF;
+}
+.dead-fill {
+  fill: #242424;
+}
+
 a {
   font-weight: 500;
   color: #646cff;
@@ -64,5 +71,11 @@ button:focus-visible {
   }
   button {
     background-color: #f9f9f9;
+  }
+  .alive-fill {
+    fill: #242424;
+  }
+  .dead-fill {
+    fill: #FFFFFF;
   }
 }

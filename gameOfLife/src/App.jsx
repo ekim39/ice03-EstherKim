@@ -1,4 +1,4 @@
-import React, { use, useState, useEffect } from 'react'
+import React, { useState, useEffect } from 'react'
 //import reactLogo from './assets/react.svg'
 //import viteLogo from '/vite.svg'
 import './App.css'
@@ -24,13 +24,9 @@ function App() {
     let canvas = document.getElementById('board');
     let context = canvas.getContext('2d');
 
-    // 0-255 (inclusive)
-    let red = 255;
-    let green = 255;
-    let blue = 255;
-    let transparency = 1.0;
-    context.strokeStyle = `rgba(${red}, ${green}, ${blue}, ${transparency})`; 
-    context.fillStyle = `rgba(${red}, ${green}, ${blue}, ${transparency})`
+    const aliveColor = getComputedStyle(document.documentElement).getPropertyValue('color');
+
+    context.strokeStyle = aliveColor; 
 
     // creates the grid lines around each square in the board
     for (var x = startX; x <= startX + width; x += cubeWidth) {
@@ -59,6 +55,8 @@ function App() {
     context.clearRect(startX, startY, width, height);
 
     drawBorder();
+    const aliveColor = getComputedStyle(document.documentElement).getPropertyValue('color');
+    context.fillStyle = aliveColor;
 
     // fills in the squares within 
     // y is the rows and x is the columns
@@ -135,6 +133,8 @@ function App() {
 
     let canvas = document.getElementById('board');
     let context = canvas.getContext('2d');
+    const aliveColor = getComputedStyle(document.documentElement).getPropertyValue('color');
+    const deadColor = getComputedStyle(document.documentElement).getPropertyValue('background-color');
   
     for (let i = 0; i < grid.y; i++) {
       newBoard[i] = [];
@@ -143,10 +143,10 @@ function App() {
         let cellState = newCellState(boardState[j][i], alive);
         newBoard[i][j] = cellState;
         if (cellState === 1) {
-          context.fillStyle = "#FFFFFF";
+          context.fillStyle = aliveColor;
           context.fillRect(startX + (cubeWidth * j), startY + (cubeHeight * i), cubeWidth, cubeHeight);
         } else {
-          context.fillStyle = "#242424";
+          context.fillStyle = deadColor;
           context.fillRect(startX + (cubeWidth * j), startY + (cubeHeight * i), cubeWidth, cubeHeight);
         }
       }
