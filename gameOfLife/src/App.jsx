@@ -1,6 +1,8 @@
 import React, { useState, useEffect } from 'react'
-//import reactLogo from './assets/react.svg'
-//import viteLogo from '/vite.svg'
+import Box from '@mui/material/Box';
+import Grid from '@mui/material/Grid';
+import Typography from '@mui/material/Typography';
+import Slider from '@mui/material/Slider';
 import './App.css'
 
 function App() {
@@ -13,8 +15,9 @@ function App() {
   // keeps track of the current board state
   // is a 2D array, y rows and x cols, with 1 being alive and 0 being dead
   const [boardState, setBoardState] = useState([])
-  const [aliveRatio, setAliveRatio] = useState(0.2)
+  const [aliveRatio, setAliveRatio] = useState(20)
   const [runGame, setRunGame] = useState(false);
+  // interactivity (sliders)
 
   // draws the border of the board
   function drawBorder() {
@@ -63,7 +66,7 @@ function App() {
     for (let i = 0; i < grid.y; i++) {
       currentBoard[i] = [];
       for (let j = 0; j < grid.x; j++) {
-        if (Math.random() < aliveRatio) {
+        if (Math.random() < (aliveRatio / 100.0)) {
           currentBoard[i][j] = 1;
           context.fillRect(startX + (cubeWidth * j), startY + (cubeHeight * i), cubeWidth, cubeHeight);
         } else {
@@ -156,6 +159,15 @@ function App() {
 
   }
 
+  const handleAliveSliderChange = (event, newValue) => {
+    setAliveRatio(newValue);
+  };
+
+  const handleWidthSliderChange = (event, newValue) => {
+    setWidth(newValue);
+    setGrid({x: grid.x, y: newValue / 10})
+  }
+
   // is called everytime runGame or the boardState is modified, used to run the whole simulation
   useEffect(() => {
     let timer; // timer keeps speed of the simulation
@@ -184,6 +196,38 @@ function App() {
         <button onClick={() => {runGame ? setRunGame(false) : setRunGame(true)}}>
           {runGame ? 'Stop' : 'Start'}
         </button>
+        <Box sx={{ width: 300 }}>
+          <Typography id="aliveRatioSlider" gutterBottom>
+            Ratio of Initial Alive Cells
+          </Typography>
+          <Typography id="gridWidthSlider" gutterBottom>
+            Grid Width
+          </Typography>
+          <Grid container spacing={2} sx={{ alignItems: 'center' }}>
+            <Slider
+              value={typeof aliveRatio === 'number' ? aliveRatio : 0}
+              onChange={handleAliveSliderChange}
+              min={0}
+              max={100}
+              aria-labelledby="aliveRatioSlider"
+              valueLabelDisplay="auto"
+              step={1}
+            />
+          </Grid>
+          <Grid container spacing={2} sx={{ alignItems: 'center' }}>
+            <Slider
+              onChange={handleWidthSliderChange}
+              min={400}
+              max={800}
+              shiftStep={40}
+              marks
+              aria-labelledby="gridWidthSlider"
+              valueLabelDisplay="auto"
+              step={10}
+            />
+          </Grid>
+        </Box>
+        
       </div>
     </>
   )
