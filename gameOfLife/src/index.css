@@ -13,6 +13,10 @@
   -moz-osx-font-smoothing: grayscale;
 }
 
+.sliders {
+  display: inline;
+}
+
 .alive-fill {
   fill: #FFFFFF;
 }

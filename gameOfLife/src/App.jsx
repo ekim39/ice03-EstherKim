@@ -165,7 +165,8 @@ function App() {
 
   const handleWidthSliderChange = (event, newValue) => {
     setWidth(newValue);
-    setGrid({x: grid.x, y: newValue / 10})
+    setHeight(newValue);
+    setGrid({x: newValue / 10, y: newValue / 10})
   }
 
   // is called everytime runGame or the boardState is modified, used to run the whole simulation
@@ -186,22 +187,20 @@ function App() {
         <h1>Conway's Game of Life</h1>
       </div>
       <div>
+      <div>
         <canvas id='board' width={width} height={height}>
         </canvas>
       </div>
-      <div>
+      
         <button onClick={() => drawBoard()}>
           Generate Board
         </button>
         <button onClick={() => {runGame ? setRunGame(false) : setRunGame(true)}}>
           {runGame ? 'Stop' : 'Start'}
         </button>
-        <Box sx={{ width: 300 }}>
+        <div id="sliders">
           <Typography id="aliveRatioSlider" gutterBottom>
             Ratio of Initial Alive Cells
-          </Typography>
-          <Typography id="gridWidthSlider" gutterBottom>
-            Grid Width
           </Typography>
           <Grid container spacing={2} sx={{ alignItems: 'center' }}>
             <Slider
@@ -214,20 +213,20 @@ function App() {
               step={1}
             />
           </Grid>
-          <Grid container spacing={2} sx={{ alignItems: 'center' }}>
+          <Typography id="gridWidthSlider" gutterBottom>
+            Grid Width
+          </Typography>
             <Slider
               onChange={handleWidthSliderChange}
-              min={400}
-              max={800}
+              min={200}
+              max={500}
               shiftStep={40}
               marks
               aria-labelledby="gridWidthSlider"
               valueLabelDisplay="auto"
               step={10}
             />
-          </Grid>
-        </Box>
-        
+        </div>
       </div>
     </>
   )
