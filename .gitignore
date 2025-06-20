@@ -26,4 +26,3 @@ dist-ssr
 node_modules/
 .env
 temp.jsx
-server.js
