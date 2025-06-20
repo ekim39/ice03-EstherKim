@@ -16,6 +16,7 @@ function App() {
   const [aliveRatio, setAliveRatio] = useState(0.2)
   const [runGame, setRunGame] = useState(false);
 
+  // draws the border of the board
   function drawBorder() {
     const cubeWidth = width/grid.x;
     const cubeHeight = height/grid.y;
@@ -44,6 +45,7 @@ function App() {
     context.stroke();
   }
 
+  // draws the initial board in generating a random board state
   function drawBoard() {
     // board state that will be set to boardState
     const currentBoard = [];
@@ -76,6 +78,7 @@ function App() {
     setBoardState(currentBoard);
   }
 
+  // returns how many of the surrounding tiles of the tile at coordinate x, y are alive
   function checkAlive(x, y) {
     let alive = 0;
     if (x !== 0) {
@@ -113,6 +116,7 @@ function App() {
     return alive;
   }
 
+  // checks whether the cell is alive or dead using its old state and how many cells around it are alive
   function newCellState(oldState, alive) {
     let newState = oldState;
     if (oldState === 0 && alive === 3) {
@@ -123,6 +127,7 @@ function App() {
     return newState;
   }
 
+  // runs one step in the simulation of the game of life
   function runSimulation() {
     let newBoard = [];
     const cubeWidth = width/grid.x;
@@ -131,30 +136,29 @@ function App() {
     let canvas = document.getElementById('board');
     let context = canvas.getContext('2d');
   
-    //while (runGame) {
-      for (let i = 0; i < grid.y; i++) {
-        newBoard[i] = [];
-        for (let j = 0; j < grid.x; j++) {
-          let alive = checkAlive(j, i);
-          let cellState = newCellState(boardState[j][i], alive);
-          newBoard[i][j] = cellState;
-          if (cellState === 1) {
-            context.fillStyle = "#FFFFFF";
-            context.fillRect(startX + (cubeWidth * j), startY + (cubeHeight * i), cubeWidth, cubeHeight);
-          } else {
-            context.fillStyle = "#242424";
-            context.fillRect(startX + (cubeWidth * j), startY + (cubeHeight * i), cubeWidth, cubeHeight);
-          }
+    for (let i = 0; i < grid.y; i++) {
+      newBoard[i] = [];
+      for (let j = 0; j < grid.x; j++) {
+        let alive = checkAlive(j, i);
+        let cellState = newCellState(boardState[j][i], alive);
+        newBoard[i][j] = cellState;
+        if (cellState === 1) {
+          context.fillStyle = "#FFFFFF";
+          context.fillRect(startX + (cubeWidth * j), startY + (cubeHeight * i), cubeWidth, cubeHeight);
+        } else {
+          context.fillStyle = "#242424";
+          context.fillRect(startX + (cubeWidth * j), startY + (cubeHeight * i), cubeWidth, cubeHeight);
         }
       }
-      setBoardState(newBoard);
-      drawBorder();
-    //}
+    }
+    setBoardState(newBoard);
+    drawBorder();
 
   }
 
+  // is called everytime runGame or the boardState is modified, used to run the whole simulation
   useEffect(() => {
-    let timer;
+    let timer; // timer keeps speed of the simulation
     if (runGame) {
       timer = setTimeout(() => {
         runSimulation();
@@ -184,9 +188,5 @@ function App() {
     </>
   )
 }
-
-/*
-<button onClick={runGame ? () => setRunGame(false) : runSimulation}>
-*/
 
 export default App
